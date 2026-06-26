@@ -361,14 +361,18 @@ def build_sim_chart(yw, cafe_n, food_n, stay_n):
         text=[f"{v:.2f}" for v in after_vals], textposition="outside",
         textfont=dict(size=12, color="#3182f6"),
     ))
+    base = {**PLOTLY_BASE}
+    base.pop("xaxis", None)
+    base.pop("yaxis", None)
     fig.update_layout(
-        **PLOTLY_BASE,
+        **base,
         title=dict(text="권역별 Shannon H' 변화", font=dict(size=15, color="#191f28")),
         barmode="group", bargap=0.25, bargroupgap=0.1,
         legend=dict(orientation="h", y=1.12, x=0.5, xanchor="center", font=dict(size=12)),
         height=400,
         margin=dict(l=48, r=16, t=64, b=44),
-        yaxis_title="Shannon H'",
+        xaxis=dict(gridcolor="#f2f4f6"),
+        yaxis=dict(gridcolor="#f2f4f6", title="Shannon H'"),
     )
     return fig
 
@@ -388,11 +392,15 @@ def build_scenario_chart(yw, zone):
         text=[f"{v:.1f}억" for v in sales], textposition="outside",
         textfont=dict(size=13, color="#333d4b"),
     ))
+    base2 = {**PLOTLY_BASE}
+    base2.pop("xaxis", None)
+    base2.pop("yaxis", None)
     fig.update_layout(
-        **PLOTLY_BASE,
+        **base2,
         title=dict(text="시나리오별 추가 관광소비", font=dict(size=15, color="#191f28")),
         height=380,
-        yaxis_title="억원/년",
+        xaxis=dict(gridcolor="#f2f4f6"),
+        yaxis=dict(gridcolor="#f2f4f6", title="억원/년"),
         showlegend=False,
     )
     return fig
