@@ -18,25 +18,15 @@ st.markdown("""
 
 html, body, [class*="st-"] { font-family: 'Noto Sans KR', -apple-system, sans-serif; }
 
-/* Material Icon 텍스트를 < > 로 대체 */
-span[data-testid="stIconMaterial"] {
-    font-size: 0 !important;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+/* 사이드바 항상 열림 고정 — 접기 버튼 숨김 */
+button[data-testid="stSidebarCollapseButton"],
+button[data-testid="stBaseButton-headerNoPadding"],
+button[data-testid="stSidebarNavCollapseButton"] {
+    display: none !important;
 }
-span[data-testid="stIconMaterial"]::after {
-    font-size: 18px;
-    font-family: 'Noto Sans KR', sans-serif;
-    font-weight: 700;
-    color: #8b95a1;
-}
-button[data-testid="stSidebarCollapseButton"] span[data-testid="stIconMaterial"]::after {
-    content: '<';
-}
-button[data-testid="stBaseButton-headerNoPadding"] span[data-testid="stIconMaterial"]::after,
-button[data-testid="stSidebarNavCollapseButton"] span[data-testid="stIconMaterial"]::after {
-    content: '>';
+[data-testid="stSidebar"] {
+    min-width: 280px !important;
+    transform: none !important;
 }
 
 /* Light background */
