@@ -1,4 +1,5 @@
-"""영월군 업종 이식 시뮬레이터 — 인터랙티브 대시보드"""
+# -*- coding: utf-8 -*-
+"""영월군 업종 이식 시뮬레이터 - 인터랙티브 대시보드"""
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -196,9 +197,9 @@ PRESETS = {
 }
 
 ZONE_META = {
-    "무릉도원면": {"label": "펜션촌", "lat": 37.28, "lon": 128.53, "color": "#f04452", "issue": "숙박 편중, 음식·레저 극소"},
+    "무릉도원면": {"label": "펜션촌", "lat": 37.28, "lon": 128.53, "color": "#f04452", "issue": "숙박 편중, 음식/레저 극소"},
     "영월읍": {"label": "시내 중심", "lat": 37.18, "lon": 128.46, "color": "#3182f6", "issue": "상권 밀집, 다양성 양호"},
-    "주천면": {"label": "동강권", "lat": 37.24, "lon": 128.34, "color": "#20c997", "issue": "음식 중심, 숙박·레저 부족"},
+    "주천면": {"label": "동강권", "lat": 37.24, "lon": 128.34, "color": "#20c997", "issue": "음식 중심, 숙박/레저 부족"},
     "김삿갓면": {"label": "숙박 특화", "lat": 37.13, "lon": 128.70, "color": "#f97316", "issue": "숙박 과다, 음식 극소"},
     "한반도면": {"label": "한반도지형", "lat": 37.23, "lon": 128.38, "color": "#8b5cf6", "issue": "소규모 혼합"},
     "북면": {"label": "북부", "lat": 37.33, "lon": 128.52, "color": "#64748b", "issue": "소규모"},
@@ -364,8 +365,9 @@ def build_sim_chart(yw, cafe_n, food_n, stay_n):
         **PLOTLY_BASE,
         title=dict(text="권역별 Shannon H' 변화", font=dict(size=15, color="#191f28")),
         barmode="group", bargap=0.25, bargroupgap=0.1,
-        legend=dict(orientation="h", y=1.08, x=0.5, xanchor="center", font=dict(size=12)),
-        height=380,
+        legend=dict(orientation="h", y=1.12, x=0.5, xanchor="center", font=dict(size=12)),
+        height=400,
+        margin=dict(l=48, r=16, t=64, b=44),
         yaxis_title="Shannon H'",
     )
     return fig
@@ -425,7 +427,7 @@ def build_map(yw, zone_data_list, selected_zone=None):
 
         is_selected = z == selected_zone
         color = meta["color"]
-        needs_str = " · ".join(zd["needs"])
+        needs_str = ", ".join(zd["needs"])
         priority_label = {"high": "긴급", "mid": "보통", "low": "양호"}.get(zd["priority"], "")
         priority_color = {"high": "#f04452", "mid": "#f97316", "low": "#20c997"}.get(zd["priority"], "#8b95a1")
 
@@ -439,7 +441,7 @@ def build_map(yw, zone_data_list, selected_zone=None):
                 <span style="background:#f3f0ff;color:#8b5cf6;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600">레저 {zd['leisure']}</span>
             </div>
             <div style="font-size:12px;margin-bottom:4px">
-                <b>H'</b> {zd['before_h']:.2f} → {zd['after_h']:.2f}
+                <b>H'</b> {zd['before_h']:.2f} &rarr; {zd['after_h']:.2f}
                 <span style="color:#20c997;font-weight:600"> (+{zd['delta_h']:.2f})</span>
             </div>
             <div style="font-size:12px;margin-bottom:4px">
@@ -489,9 +491,9 @@ def main():
     # ── Header ──
     st.markdown("""
     <div class="hero">
-        <div class="hero-eyebrow">SDC · 영월군 관광 데이터 분석</div>
+        <div class="hero-eyebrow">SDC &middot; 영월군 관광 데이터 분석</div>
         <h2>업종 이식 시뮬레이터</h2>
-        <p>권역·업종·수량을 조정하면 Shannon H' 변화, 추가 소비 효과, 추천 이식 지역을 실시간으로 확인할 수 있습니다.</p>
+        <p>권역&middot;업종&middot;수량을 조정하면 Shannon H' 변화, 추가 소비 효과, 추천 이식 지역을 실시간으로 확인할 수 있습니다.</p>
     </div>
     """, unsafe_allow_html=True)
 
@@ -507,7 +509,7 @@ def main():
 
         st.markdown("---")
         st.markdown("##### 이식 업종 수량")
-        cafe_n = st.slider("카페·베이커리", 0, 100, dc)
+        cafe_n = st.slider("카페/베이커리", 0, 100, dc)
         food_n = st.slider("음식점", 0, 60, df)
         stay_n = st.slider("숙박업", 0, 60, ds)
 
@@ -521,7 +523,7 @@ def main():
         카페 월매출 {CAFE_Y//12:,}만원<br>
         음식점 월매출 {FOOD_Y//12:,}만원<br>
         숙박 월매출 {STAY_Y//12:,}만원<br>
-        지역귀속률 {LOCAL_RATE:.0%} · 지방세율 {TAX_RATE:.2%}<br>
+        지역귀속률 {LOCAL_RATE:.0%} &middot; 지방세율 {TAX_RATE:.2%}<br>
         현재 재정자립도 {BASE_FI:.3f}%
         </div>
         """, unsafe_allow_html=True)
@@ -541,7 +543,7 @@ def main():
         <div class="kpi">
             <div class="kpi-label">{zone} Shannon H'</div>
             <div class="kpi-value green">{result['after_h']:.2f}<span class="kpi-delta">+{result['after_h']-result['before_h']:.2f}</span></div>
-            <div class="kpi-sub">현재 {result['before_h']:.2f} · 경주 벤치마크 {gj_h:.2f}</div>
+            <div class="kpi-sub">현재 {result['before_h']:.2f} &middot; 경주 벤치마크 {gj_h:.2f}</div>
         </div>
         <div class="kpi">
             <div class="kpi-label">재정자립도</div>
@@ -580,7 +582,7 @@ def main():
     <div class="map-legend">
         <span><span class="leg-dot" style="background:#3182f6"></span> 음식점</span>
         <span><span class="leg-dot" style="background:#f97316"></span> 숙박</span>
-        <span><span class="leg-dot" style="background:#8b5cf6"></span> 레저·스포츠</span>
+        <span><span class="leg-dot" style="background:#8b5cf6"></span> 레저/스포츠</span>
         <span><span class="leg-dot" style="background:transparent;border:2px dashed #f04452;width:8px;height:8px"></span> 이식 추천 영역</span>
     </div>
     """, unsafe_allow_html=True)
@@ -600,7 +602,7 @@ def main():
         needs_html = " ".join([
             f'<span class="badge {"badge-blue" if n=="음식" else "badge-orange" if n=="숙박" else "badge-green"}">{n}</span>'
             for n in zd["needs"]
-        ]) if zd["needs"] else '<span style="color:#b0b8c1;font-size:11px">—</span>'
+        ]) if zd["needs"] else '<span style="color:#b0b8c1;font-size:11px">&mdash;</span>'
 
         p_badge = {"high": "badge-red", "mid": "badge-orange", "low": "badge-green"}.get(zd["priority"], "")
         p_label = {"high": "긴급", "mid": "보통", "low": "양호"}.get(zd["priority"], "")
@@ -638,8 +640,8 @@ def main():
 
     # ── Zone Detail ──
     st.markdown(f"""
-    <div class="card-title">{zone} — 상세 분석</div>
-    <div class="card-sub">{ZONE_META.get(zone, {}).get('issue', '')}</div>
+    <div class="card-title">{zone} &mdash; 상세 분석</div>
+    <div class="card-sub">{ZONE_META.get(zone, {}).get('issue', '').replace('·', '/').replace('—', '-')}</div>
     """, unsafe_allow_html=True)
 
     d1, d2 = st.columns([3, 2])
@@ -671,8 +673,9 @@ def main():
         fig.update_layout(
             **layout,
             title=dict(text=f"{zone} 업종 소분류 TOP 12", font=dict(size=14, color="#191f28")),
-            barmode="group", height=420,
-            legend=dict(orientation="h", y=1.06, x=0.5, xanchor="center"),
+            barmode="group", height=460,
+            legend=dict(orientation="h", y=1.12, x=0.5, xanchor="center", font=dict(size=12)),
+            margin=dict(l=48, r=16, t=72, b=44),
             yaxis=dict(autorange="reversed", gridcolor="#f2f4f6"),
             xaxis=dict(gridcolor="#f2f4f6", title="업소 수"),
         )
@@ -686,7 +689,7 @@ def main():
 | 균등도 J' | {result['before_e']:.2f} | {result['after_e']:.2f} | +{result['after_e']-result['before_e']:.2f} |
 | 업종 수 | {result['before_n']} | {result['after_n']} | +{result['after_n']-result['before_n']} |
 | 업소 수 | {result['before_count']} | {result['after_count']} | +{result['after_count']-result['before_count']} |
-| 경주 벤치마크 | {gj_h:.2f} | — | 격차 {result['after_h']-gj_h:+.2f} |
+| 경주 벤치마크 | {gj_h:.2f} | - | 격차 {result['after_h']-gj_h:+.2f} |
 """)
 
         current_zd = next((z for z in zone_list if z["zone"] == zone), None)
@@ -696,14 +699,14 @@ def main():
 <div class="recommend">
     <div class="recommend-title">이식 추천</div>
     <p>{zone}은 <b>{needs_str}</b> 업종이 부족합니다.
-    이식 시 H'가 {current_zd['before_h']:.2f} → {current_zd['after_h']:.2f}로 개선되며,
+    이식 시 H'가 {current_zd['before_h']:.2f}에서 {current_zd['after_h']:.2f}로 개선되며,
     경주 대비 격차가 {current_zd['after_h']-gj_h:+.2f}로 축소됩니다.</p>
 </div>
             """, unsafe_allow_html=True)
 
     # ── Footer ──
     st.markdown('<div class="sep"></div>', unsafe_allow_html=True)
-    st.caption("데이터: 소상공인 상권정보 API · 소상공인365 매출 · 지방재정365 | 분석 기준: 2024~2026")
+    st.caption("데이터: 소상공인 상권정보 API / 소상공인365 매출 / 지방재정365 | 분석 기준: 2024~2026")
 
 
 if __name__ == "__main__":
