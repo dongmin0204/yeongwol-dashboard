@@ -18,21 +18,24 @@ st.markdown("""
 
 html, body, [class*="st-"] { font-family: 'Noto Sans KR', -apple-system, sans-serif; }
 
-/* Sidebar collapse/expand: Material Icon 텍스트를 < > 로 대체 */
-button[data-testid="stSidebarCollapseButton"] span[data-testid="stIconMaterial"],
-button[data-testid="stBaseButton-headerNoPadding"] span[data-testid="stIconMaterial"] {
+/* Material Icon 텍스트를 < > 로 대체 */
+span[data-testid="stIconMaterial"] {
     font-size: 0 !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
-button[data-testid="stSidebarCollapseButton"] span[data-testid="stIconMaterial"]::after,
-button[data-testid="stBaseButton-headerNoPadding"] span[data-testid="stIconMaterial"]::after {
-    content: '<';
-    font-size: 20px;
+span[data-testid="stIconMaterial"]::after {
+    font-size: 18px;
     font-family: 'Noto Sans KR', sans-serif;
     font-weight: 700;
     color: #8b95a1;
 }
-[data-testid="stSidebar"][aria-expanded="false"] ~ div button span[data-testid="stIconMaterial"]::after,
-button[data-testid="stBaseButton-headerNoPadding"] span[data-testid="stIconMaterial"]::after {
+button[data-testid="stSidebarCollapseButton"] span[data-testid="stIconMaterial"]::after {
+    content: '<';
+}
+button[data-testid="stBaseButton-headerNoPadding"] span[data-testid="stIconMaterial"]::after,
+button[data-testid="stSidebarNavCollapseButton"] span[data-testid="stIconMaterial"]::after {
     content: '>';
 }
 
