@@ -15,6 +15,7 @@ st.set_page_config(page_title="영월군 업종 이식 시뮬레이터", page_ic
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap');
 
 html, body, [class*="st-"] { font-family: 'Noto Sans KR', -apple-system, sans-serif; }
 
