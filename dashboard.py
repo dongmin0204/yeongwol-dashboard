@@ -213,14 +213,24 @@ PLOTLY_COLORS = {
     "red": "#f04452", "slate": "#8b95a1", "bg": "#f7f8fa",
 }
 
-PLOTLY_BASE = dict(
-    paper_bgcolor="rgba(0,0,0,0)",
-    plot_bgcolor="rgba(0,0,0,0)",
-    font=dict(family="Noto Sans KR, sans-serif", color="#333d4b", size=12),
-    margin=dict(l=48, r=16, t=44, b=44),
-    xaxis=dict(gridcolor="#f2f4f6", zerolinecolor="#e5e8eb"),
-    yaxis=dict(gridcolor="#f2f4f6", zerolinecolor="#e5e8eb"),
-)
+_GRID = "#f2f4f6"
+_ZERO = "#e5e8eb"
+
+def _base_layout(**overrides):
+    layout = dict(
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)",
+        font=dict(family="Noto Sans KR, sans-serif", color="#333d4b", size=12),
+        margin=dict(l=48, r=16, t=44, b=44),
+        xaxis=dict(gridcolor=_GRID, zerolinecolor=_ZERO),
+        yaxis=dict(gridcolor=_GRID, zerolinecolor=_ZERO),
+    )
+    for k, v in overrides.items():
+        if isinstance(v, dict) and k in layout and isinstance(layout[k], dict):
+            layout[k] = {**layout[k], **v}
+        else:
+            layout[k] = v
+    return layout
 
 
 def shannon_h(series):
@@ -361,19 +371,14 @@ def build_sim_chart(yw, cafe_n, food_n, stay_n):
         text=[f"{v:.2f}" for v in after_vals], textposition="outside",
         textfont=dict(size=12, color="#3182f6"),
     ))
-    base = {**PLOTLY_BASE}
-    base.pop("xaxis", None)
-    base.pop("yaxis", None)
-    fig.update_layout(
-        **base,
+    fig.update_layout(**_base_layout(
         title=dict(text="권역별 Shannon H' 변화", font=dict(size=15, color="#191f28")),
         barmode="group", bargap=0.25, bargroupgap=0.1,
         legend=dict(orientation="h", y=1.12, x=0.5, xanchor="center", font=dict(size=12)),
         height=400,
         margin=dict(l=48, r=16, t=64, b=44),
-        xaxis=dict(gridcolor="#f2f4f6"),
-        yaxis=dict(gridcolor="#f2f4f6", title="Shannon H'"),
-    )
+        yaxis=dict(title="Shannon H'"),
+    ))
     return fig
 
 
@@ -392,17 +397,12 @@ def build_scenario_chart(yw, zone):
         text=[f"{v:.1f}억" for v in sales], textposition="outside",
         textfont=dict(size=13, color="#333d4b"),
     ))
-    base2 = {**PLOTLY_BASE}
-    base2.pop("xaxis", None)
-    base2.pop("yaxis", None)
-    fig.update_layout(
-        **base2,
+    fig.update_layout(**_base_layout(
         title=dict(text="시나리오별 추가 관광소비", font=dict(size=15, color="#191f28")),
         height=380,
-        xaxis=dict(gridcolor="#f2f4f6"),
-        yaxis=dict(gridcolor="#f2f4f6", title="억원/년"),
+        yaxis=dict(title="억원/년"),
         showlegend=False,
-    )
+    ))
     return fig
 
 
@@ -675,18 +675,14 @@ def main():
                              marker_color="#e5e8eb"))
         fig.add_trace(go.Bar(name="이식 후", y=all_cats, x=a_vals, orientation="h",
                              marker_color="#3182f6"))
-        layout = {**PLOTLY_BASE}
-        layout.pop("yaxis", None)
-        layout.pop("xaxis", None)
-        fig.update_layout(
-            **layout,
+        fig.update_layout(**_base_layout(
             title=dict(text=f"{zone} 업종 소분류 TOP 12", font=dict(size=14, color="#191f28")),
             barmode="group", height=460,
             legend=dict(orientation="h", y=1.12, x=0.5, xanchor="center", font=dict(size=12)),
             margin=dict(l=48, r=16, t=72, b=44),
-            yaxis=dict(autorange="reversed", gridcolor="#f2f4f6"),
-            xaxis=dict(gridcolor="#f2f4f6", title="업소 수"),
-        )
+            yaxis=dict(autorange="reversed"),
+            xaxis=dict(title="업소 수"),
+        ))
         st.plotly_chart(fig, use_container_width=True, config={"displayModeBar": False})
 
     with d2:
