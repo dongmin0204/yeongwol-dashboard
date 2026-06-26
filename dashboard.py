@@ -15,9 +15,26 @@ st.set_page_config(page_title="영월군 업종 이식 시뮬레이터", page_ic
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap');
 
 html, body, [class*="st-"] { font-family: 'Noto Sans KR', -apple-system, sans-serif; }
+
+/* Sidebar collapse/expand: Material Icon 텍스트를 < > 로 대체 */
+button[data-testid="stSidebarCollapseButton"] span[data-testid="stIconMaterial"],
+button[data-testid="stBaseButton-headerNoPadding"] span[data-testid="stIconMaterial"] {
+    font-size: 0 !important;
+}
+button[data-testid="stSidebarCollapseButton"] span[data-testid="stIconMaterial"]::after,
+button[data-testid="stBaseButton-headerNoPadding"] span[data-testid="stIconMaterial"]::after {
+    content: '<';
+    font-size: 20px;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 700;
+    color: #8b95a1;
+}
+[data-testid="stSidebar"][aria-expanded="false"] ~ div button span[data-testid="stIconMaterial"]::after,
+button[data-testid="stBaseButton-headerNoPadding"] span[data-testid="stIconMaterial"]::after {
+    content: '>';
+}
 
 /* Light background */
 .stApp { background: #f7f8fa; }
