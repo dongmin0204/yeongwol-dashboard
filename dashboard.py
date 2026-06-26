@@ -542,8 +542,8 @@ def main():
         카페 월매출 {CAFE_Y//12:,}만원<br>
         음식점 월매출 {FOOD_Y//12:,}만원<br>
         숙박 월매출 {STAY_Y//12:,}만원<br>
-        지역귀속률 {LOCAL_RATE:.0%} &middot; 지방세율 {TAX_RATE:.2%}<br>
-        현재 재정자립도 {BASE_FI:.3f}%
+        지역귀속률 {LOCAL_RATE:.0%}<br>
+        인구감소 1명 상쇄 소비 {POP_EQ:,}만원/년
         </div>
         """, unsafe_allow_html=True)
 
@@ -552,27 +552,23 @@ def main():
     zone_list = zone_analysis(yw, cafe_n, food_n, stay_n)
 
     # ── KPI ──
+    pop_pct = result['pop_off'] / 587 * 100
     st.markdown(f"""
     <div class="kpi-row">
+        <div class="kpi" style="flex:1.4;border-left:4px solid #3182f6">
+            <div class="kpi-label">인구 감소 대체 효과</div>
+            <div class="kpi-value blue">{result['pop_off']:,}<span style="font-size:16px;color:#8b95a1">명분 소비 상쇄</span></div>
+            <div class="kpi-sub">연간 자연감소 587명 대비 <b style="color:#3182f6">{pop_pct:.0f}%</b> 보전</div>
+        </div>
         <div class="kpi">
             <div class="kpi-label">추가 관광소비</div>
-            <div class="kpi-value blue">{result['sales_억']:.1f}<span style="font-size:16px;color:#8b95a1">억/년</span></div>
+            <div class="kpi-value green">{result['sales_억']:.1f}<span style="font-size:16px;color:#8b95a1">억/년</span></div>
             <div class="kpi-sub">카페 {cafe_n} + 음식 {food_n} + 숙박 {stay_n}개</div>
         </div>
         <div class="kpi">
             <div class="kpi-label">{zone} Shannon H'</div>
-            <div class="kpi-value green">{result['after_h']:.2f}<span class="kpi-delta">+{result['after_h']-result['before_h']:.2f}</span></div>
+            <div class="kpi-value orange">{result['after_h']:.2f}<span class="kpi-delta">+{result['after_h']-result['before_h']:.2f}</span></div>
             <div class="kpi-sub">현재 {result['before_h']:.2f} &middot; 경주 벤치마크 {gj_h:.2f}</div>
-        </div>
-        <div class="kpi">
-            <div class="kpi-label">재정자립도</div>
-            <div class="kpi-value slate">{result['new_fi']:.3f}<span style="font-size:16px;color:#8b95a1">%</span></div>
-            <div class="kpi-sub">현재 {BASE_FI:.3f}% <span class="kpi-delta">+{result['fi_delta']:.3f}%p</span></div>
-        </div>
-        <div class="kpi">
-            <div class="kpi-label">인구 대체 효과</div>
-            <div class="kpi-value orange">{result['pop_off']}<span style="font-size:16px;color:#8b95a1">명분</span></div>
-            <div class="kpi-sub">연간 자연감소 587명 대비 {result['pop_off']/587*100:.0f}%</div>
         </div>
     </div>
     """, unsafe_allow_html=True)
