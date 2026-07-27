@@ -428,13 +428,16 @@ def build_map(yw, zone_data_list, selected_zone=None):
     for cat, color in cat_colors.items():
         cat_df = yw[yw["업종대분류명"] == cat]
         fg = folium.FeatureGroup(name=f"{cat} ({len(cat_df)})")
+        # ponytail: cluster 1399+ markers so the browser renders aggregates,
+        # not 1399 simultaneous SVG nodes (that crashes the tab on rerun).
+        cluster = MarkerCluster(disableClusteringAtZoom=14).add_to(fg)
         for _, row in cat_df.iterrows():
             folium.CircleMarker(
                 location=[row["위도"], row["경도"]],
                 radius=3, color=color, fill=True,
                 fill_color=color, fill_opacity=0.5, weight=0.5, opacity=0.6,
                 popup=f"<b>{row.get('상호명','')}</b><br>{row.get('업종소분류명','')}",
-            ).add_to(fg)
+            ).add_to(cluster)
         fg.add_to(m)
 
     rec_fg = folium.FeatureGroup(name="업종 추천 지역", show=True)
@@ -500,6 +503,12 @@ def build_map(yw, zone_data_list, selected_zone=None):
     rec_fg.add_to(m)
     folium.LayerControl(collapsed=False).add_to(m)
     return m
+
+
+@st.cache_resource(max_entries=8)
+def get_map(_yw, cafe_n, food_n, stay_n, zone):
+    # ponytail: cache the 1.7MB map so identical states skip the rebuild.
+    return build_map(_yw, zone_analysis(_yw, cafe_n, food_n, stay_n), selected_zone=zone)
 
 
 def main():
@@ -592,7 +601,7 @@ def main():
     <div class="card-sub">H'가 낮고 특정 업종이 부족한 권역을 자동 탐지합니다. 마커를 클릭하면 상세 정보를 확인할 수 있습니다.</div>
     """, unsafe_allow_html=True)
 
-    m = build_map(yw, zone_list, selected_zone=zone)
+    m = get_map(yw, cafe_n, food_n, stay_n, zone)
     st_folium(m, width=None, height=520, returned_objects=[])
 
     st.markdown("""
