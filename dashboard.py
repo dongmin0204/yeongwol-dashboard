@@ -519,7 +519,6 @@ def main():
     # ── Header ──
     st.markdown("""
     <div class="hero">
-        <div class="hero-eyebrow">제 4회 문화체육관광 인공지능데이터 활용 공모전</div>
         <h2>업종 이식 시뮬레이터</h2>
         <p>권역&middot;업종&middot;수량을 조정하면 Shannon H' 변화, 추가 소비 효과, 추천 이식 지역을 실시간으로 확인할 수 있습니다.</p>
     </div>
