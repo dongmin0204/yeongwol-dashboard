@@ -44,9 +44,9 @@ export default function App() {
   const tuneRef = useRef<HTMLDetailsElement>(null)
   const controlsRef = useRef<HTMLElement>(null)
 
-  // ponytail: CSS로는 details를 열 수 없다 — 데스크톱이면 마운트 때 한 번만 열어두고 이후엔 사용자 몫.
+  // 세부 조정(스테퍼·권역)은 모바일 포함 기본 펼침 — 접기는 사용자 몫.
   useEffect(() => {
-    if (tuneRef.current) tuneRef.current.open = window.matchMedia('(min-width: 1024px)').matches
+    if (tuneRef.current) tuneRef.current.open = true
   }, [])
 
   useEffect(() => {
