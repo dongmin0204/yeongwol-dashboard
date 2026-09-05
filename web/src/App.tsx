@@ -1,7 +1,7 @@
 import { Suspense, lazy, useEffect, useMemo, useRef, useState } from 'react'
 import {
-  Bar, BarChart, CartesianGrid, Cell, Legend, ResponsiveContainer,
-  Tooltip, XAxis, YAxis,
+  Bar, BarChart, CartesianGrid, Cell, LabelList, Legend, ReferenceLine,
+  ResponsiveContainer, Tooltip, XAxis, YAxis,
 } from 'recharts'
 import {
   CAFE_Y, FOOD_Y, GJ_H, LOCAL_RATE, POP_EQ, PRESETS, STAY_Y, ZONES, ZONE_META,
@@ -119,26 +119,32 @@ export default function App() {
             <p className="sec-sub">{EVIDENCE_TITLE.sub}</p>
           </header>
           <div className="ev-grid">
-            {EVIDENCE.map((e) => (
-              <div className="card ev-card" key={e.label}>
-                <div className="ev-value">{e.value}</div>
-                <div className="ev-label">{e.label}</div>
-                <p className="ev-desc">{e.desc}</p>
-                {e.bars && (
+            {EVIDENCE.map((e) => {
+              const max = Math.max(...e.bars.map((b) => b.value))
+              return (
+                <div className="card ev-card" key={e.label}>
+                  <div className="ev-head">
+                    <span className="ev-value">{e.value}</span>
+                    <span className="ev-label">{e.label}</span>
+                  </div>
                   <div className="ev-bars">
                     {e.bars.map((b) => (
                       <div className="ev-bar-row" key={b.name}>
                         <span className="ev-bar-name">{b.name}</span>
                         <span className="ev-bar-track">
-                          <span className="ev-bar-fill" style={{ width: `${(b.ratio / 2.5) * 100}%` }} />
+                          <span
+                            className={`ev-bar-fill${b.tone ? ` ${b.tone}` : ''}`}
+                            style={{ width: `${(b.value / max) * 100}%` }}
+                          />
                         </span>
-                        <span className="ev-bar-val">{b.ratio.toFixed(2)}배</span>
+                        <span className="ev-bar-val">{b.display}</span>
                       </div>
                     ))}
                   </div>
-                )}
-              </div>
-            ))}
+                  <p className="ev-desc">{e.desc}</p>
+                </div>
+              )
+            })}
           </div>
         </section>
 
@@ -268,6 +274,10 @@ export default function App() {
                     <YAxis {...axis} />
                     <Tooltip {...tooltipStyle} cursor={{ fill: '#f9fafb' }} />
                     <Legend wrapperStyle={{ fontSize: 12 }} />
+                    <ReferenceLine
+                      y={+GJ_H.toFixed(2)} stroke="#fb8c00" strokeDasharray="4 4"
+                      label={{ value: `경주 ${GJ_H.toFixed(2)}`, position: 'insideTopRight', fontSize: 11, fill: '#fb8c00' }}
+                    />
                     <Bar dataKey="before" name="현재" fill="#e5e8eb" radius={[4, 4, 0, 0]} />
                     <Bar dataKey="after" name="이식 후" fill="#3182f6" radius={[4, 4, 0, 0]} />
                   </BarChart>
@@ -280,7 +290,7 @@ export default function App() {
               <div className="card-sub">억원/년</div>
               <div className="chart">
                 <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={scenarios} margin={{ top: 8, right: 8, left: -16, bottom: 0 }}>
+                  <BarChart data={scenarios} margin={{ top: 20, right: 8, left: -16, bottom: 0 }}>
                     <CartesianGrid stroke="#f2f4f6" vertical={false} />
                     <XAxis dataKey="name" {...axis} />
                     <YAxis {...axis} />
@@ -289,6 +299,7 @@ export default function App() {
                       {scenarios.map((s, i) => (
                         <Cell key={s.name} fill={SCENARIO_COLORS[i]} />
                       ))}
+                      <LabelList dataKey="sales" position="top" fontSize={11} fill="#4e5968" formatter={(v: React.ReactNode) => `${v}억`} />
                     </Bar>
                   </BarChart>
                 </ResponsiveContainer>

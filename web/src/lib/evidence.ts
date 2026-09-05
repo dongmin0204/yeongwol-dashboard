@@ -1,43 +1,57 @@
 // TURN:STAY 보고서 고정 수치·카피 — 근거(§5)·제언(§6) 섹션 전용.
 // 시뮬레이터 계산값(sim.ts)과 달리 전부 정적 상수. 출처: 결과물 PDF.
 
+export type EvBar = { name: string; value: number; display: string; tone?: 'red' | 'grey' }
+
 export const HERO = {
   eyebrow: '01 진단 · TURN:STAY — 인구소멸지역의 체류형 전환 모델',
   headline: '손님은 늘었는데, 머물지 않는다',
-  desc: "영화 '왕과 사는 남자' 흥행 이후 영월 방문객은 늘었지만, 숙박 비율은 오히려 하락했습니다. 체류를 유도할 업종 생태계의 공백이 원인입니다.",
+  desc: '영화 흥행으로 방문객은 늘었지만 숙박 비율은 오히려 하락 — 체류를 유도할 업종 생태계의 공백이 원인입니다.',
   stats: [
     { label: '방문객 증가', value: '+24.7%', sub: '전년 동기 대비 (2026 1~5월)', tone: 'blue' },
     { label: '숙박 비율', value: '16.2% → 15.0%', sub: '흥행에도 −1.2%p 하락', tone: 'red' },
   ],
 }
 
-export const EVIDENCE_TITLE = { eyebrow: '02 근거', title: '왜 업종 이식인가', sub: '보고서 9개 분석 중 핵심 근거 4가지' }
+export const EVIDENCE_TITLE = { eyebrow: '02 근거', title: '왜 업종 이식인가', sub: '핵심 근거 4가지 — 상세 분석은 보고서 참조' }
 
-export const EVIDENCE = [
+export const EVIDENCE: { value: string; label: string; desc: string; bars: EvBar[] }[] = [
   {
     value: '2.8배',
     label: '숙박객 1인당 지출',
-    desc: '숙박 여행객 212,073원 vs 당일 75,456원. 하루를 더 머물게 하는 것이 곧 소비다 (t=44.7, p<0.001).',
+    desc: '하루를 더 머물게 하는 것이 곧 소비다 (t=44.7, p<0.001).',
+    bars: [
+      { name: '숙박 여행', value: 212073, display: '21.2만원' },
+      { name: '당일 여행', value: 75456, display: '7.5만원', tone: 'grey' },
+    ],
   },
   {
     value: '2.3배',
     label: '숙박 전환을 이끄는 활동',
-    desc: '야간·체류형 활동을 한 방문객은 당일치기 대비 숙박 확률이 2배 이상 높다 (로지스틱 회귀 오즈비).',
+    desc: '야간·체류형 활동이 숙박 확률을 2배 이상 높인다 (오즈비).',
     bars: [
-      { name: '자연·풍경 감상', ratio: 2.32 },
-      { name: '문화예술·공연', ratio: 2.27 },
-      { name: '유흥·오락', ratio: 2.23 },
+      { name: '자연·풍경 감상', value: 2.32, display: '2.32배' },
+      { name: '문화예술·공연', value: 2.27, display: '2.27배' },
+      { name: '유흥·오락', value: 2.23, display: '2.23배' },
     ],
   },
   {
     value: '11배',
-    label: '경주 대비 부족 1위 업종: 카페',
-    desc: '체류형 관광 성공 사례 경주와 상권을 대조하면 카페 격차가 가장 크다. 이식 우선 업종.',
+    label: '경주 대비 부족 1위: 카페',
+    desc: '벤치마크 경주와 격차가 가장 큰 업종 — 이식 1순위.',
+    bars: [
+      { name: '경주', value: 11, display: '11' },
+      { name: '영월', value: 1, display: '1', tone: 'grey' },
+    ],
   },
   {
     value: "H' 1.65",
     label: '병목 권역: 무릉도원면',
-    desc: '펜션촌에 숙박 96곳, 음식점은 23곳 — 투숙객이 식사할 곳이 없다. 경주 벤치마크는 3.05.',
+    desc: '숙박 96곳에 음식점 23곳 — 투숙객이 식사할 곳이 없다.',
+    bars: [
+      { name: '무릉도원면', value: 1.65, display: '1.65', tone: 'red' },
+      { name: '경주 벤치마크', value: 3.05, display: '3.05' },
+    ],
   },
 ]
 
