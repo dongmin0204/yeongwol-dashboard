@@ -8,6 +8,7 @@ import {
   simulate, topSubcats, zoneAnalysis,
 } from './lib/sim'
 import { CONCLUSION, EVIDENCE, EVIDENCE_TITLE, HERO, SIM_TITLE } from './lib/evidence'
+import ZoneSheet from './ZoneSheet'
 import './App.css'
 
 const MapPanel = lazy(() => import('./MapPanel'))
@@ -38,8 +39,10 @@ export default function App() {
   const [[cafeN, foodN, stayN], setNums] = useState(PRESETS[DEFAULT_PRESET])
   const [zone, setZone] = useState('무릉도원면')
   const [simVisible, setSimVisible] = useState(false)
+  const [sheetOpen, setSheetOpen] = useState(false)
   const simRef = useRef<HTMLDivElement>(null)
   const tuneRef = useRef<HTMLDetailsElement>(null)
+  const controlsRef = useRef<HTMLElement>(null)
 
   // ponytail: CSS로는 details를 열 수 없다 — 데스크톱이면 마운트 때 한 번만 열어두고 이후엔 사용자 몫.
   useEffect(() => {
@@ -146,7 +149,7 @@ export default function App() {
         </header>
       </div>
 
-      <aside className="controls">
+      <aside className="controls" ref={controlsRef}>
         <h1 className="controls-title">시뮬레이션 설정</h1>
         <div className="controls-body">
           <div className="chips">
@@ -172,26 +175,41 @@ export default function App() {
               { label: '음식점', max: 60, value: foodN },
               { label: '숙박업', max: 60, value: stayN },
             ].map((s, i) => (
-              <label className="field" key={s.label}>
-                <span>
-                  {s.label} <b>{s.value}</b>
-                </span>
+              <div className="field" key={s.label}>
+                <div className="step-row">
+                  <span>{s.label}</span>
+                  <div className="stepper">
+                    <button
+                      type="button" aria-label={`${s.label} 1 감소`}
+                      disabled={s.value <= 0}
+                      onClick={() => setNum(i, s.value - 1)}
+                    >
+                      −
+                    </button>
+                    <b>{s.value}</b>
+                    <button
+                      type="button" aria-label={`${s.label} 1 증가`}
+                      disabled={s.value >= s.max}
+                      onClick={() => setNum(i, s.value + 1)}
+                    >
+                      +
+                    </button>
+                  </div>
+                </div>
                 <input
-                  type="range" min={0} max={s.max} value={s.value}
+                  type="range" min={0} max={s.max} value={s.value} aria-label={s.label}
                   onChange={(e) => setNum(i, Number(e.target.value))}
                 />
-              </label>
+              </div>
             ))}
 
             <div className="hr" />
-            <label className="field">
+            <div className="field">
               <span>집중 분석 권역</span>
-              <select value={zone} onChange={(e) => setZone(e.target.value)}>
-                {ZONE_NAMES.map((z) => (
-                  <option key={z} value={z}>{z}</option>
-                ))}
-              </select>
-            </label>
+              <button type="button" className="zone-trigger" onClick={() => setSheetOpen(true)}>
+                {zone} <span aria-hidden="true">▾</span>
+              </button>
+            </div>
 
             <div className="hr" />
             <div className="notes">
@@ -472,11 +490,28 @@ export default function App() {
       </div>
 
       {simVisible && (
-        <div className="minibar">
+        <button
+          type="button"
+          className="minibar"
+          onClick={() => controlsRef.current?.scrollIntoView({ behavior: 'smooth' })}
+        >
           <b>{result.popOff.toLocaleString()}</b>명분
           <span className="minibar-dot">&middot;</span>
           <b>{result.sales억.toFixed(1)}</b>억/년
-        </div>
+          <span className="minibar-cta">설정 조정 ↑</span>
+        </button>
+      )}
+
+      {sheetOpen && (
+        <ZoneSheet
+          zones={ZONE_NAMES}
+          value={zone}
+          onSelect={(z) => {
+            setZone(z)
+            setSheetOpen(false)
+          }}
+          onClose={() => setSheetOpen(false)}
+        />
       )}
     </div>
   )
