@@ -1,6 +1,7 @@
-/* Toss-inspired light theme — dashboard.py CSS 포팅 */
+/* Toss 라이트 테마 — 색상은 toss-coffee-order tosslib(TDS) 토큰 값
+   grey50~900 / blue500 / green500 / orange600 / red500 / purple400 */
 :root {
-  --bg: #f7f8fa;
+  --bg: #f2f4f6;
   --card: #ffffff;
   --ink: #191f28;
   --ink-2: #333d4b;
@@ -9,9 +10,9 @@
   --muted-2: #b0b8c1;
   --line: #f2f4f6;
   --blue: #3182f6;
-  --green: #20c997;
-  --orange: #f97316;
-  --red: #f04452;
+  --green: #00a661;
+  --orange: #fb8c00;
+  --red: #f44336;
   --shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
 }
 
@@ -223,7 +224,7 @@ body {
 .tbl .num { text-align: right; font-variant-numeric: tabular-nums; }
 .tbl .pos { color: var(--green); font-weight: 600; }
 .tbl .neg { color: var(--red); font-weight: 600; }
-.tbl tr.hl td { background: #f0f7ff; }
+.tbl tr.hl td { background: #e8f3ff; }
 .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 8px; }
 .muted { color: var(--muted-2); font-size: 11px; }
 
@@ -233,14 +234,14 @@ body {
   border-radius: 6px; font-size: 11px; font-weight: 600;
 }
 .badge-blue { background: #e8f3ff; color: var(--blue); }
-.badge-green { background: #e6f9f0; color: var(--green); }
-.badge-orange { background: #fff4e6; color: var(--orange); }
-.badge-red { background: #ffefef; color: var(--red); }
-.badge-purple { background: #f3f0ff; color: #8b5cf6; }
+.badge-green { background: #e5fff4; color: var(--green); }
+.badge-orange { background: #fff3e0; color: var(--orange); }
+.badge-red { background: #ffebee; color: var(--red); }
+.badge-purple { background: #f3e5f5; color: #ab47bc; }
 
 /* ── Recommend ── */
 .recommend {
-  background: #f0f7ff; border-radius: 12px;
+  background: #e8f3ff; border-radius: 12px;
   padding: 16px 20px; margin: 16px 0 0; border-left: 3px solid var(--blue);
 }
 .recommend-title { font-size: 13px; font-weight: 700; color: var(--blue); margin-bottom: 4px; }

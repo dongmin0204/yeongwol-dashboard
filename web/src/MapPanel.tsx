@@ -7,7 +7,7 @@ import 'leaflet.markercluster/dist/MarkerCluster.Default.css'
 import { CAT_COLORS, CAT_NAMES, POINTS, ZONE_META, type ZoneRow } from './lib/sim'
 
 const PRIORITY_LABEL: Record<string, string> = { high: '긴급', mid: '보통', low: '양호' }
-const PRIORITY_COLOR: Record<string, string> = { high: '#f04452', mid: '#f97316', low: '#20c997' }
+const PRIORITY_COLOR: Record<string, string> = { high: '#f44336', mid: '#fb8c00', low: '#00a661' }
 
 function esc(s: string) {
   return s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!)
@@ -86,7 +86,7 @@ export default function MapPanel({ rows, selectedZone }: { rows: ZoneRow[]; sele
             <span class="badge badge-purple">레저 ${zd.leisure}</span>
           </div>
           <div class="mp-row"><b>H'</b> ${zd.beforeH.toFixed(2)} &rarr; ${zd.afterH.toFixed(2)}
-            <span style="color:#20c997;font-weight:600"> (+${zd.deltaH.toFixed(2)})</span></div>
+            <span style="color:#00a661;font-weight:600"> (+${zd.deltaH.toFixed(2)})</span></div>
           <div class="mp-row"><b>추천:</b> <span style="color:${pColor};font-weight:600">${esc(needsStr)} 이식 (${pLabel})</span></div>
         </div>`
 

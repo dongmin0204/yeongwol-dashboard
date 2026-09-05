@@ -17,7 +17,7 @@ const PRESET_NAMES = Object.keys(PRESETS)
 const DEFAULT_PRESET = '방식B 적극'
 const ZONE_NAMES = Object.keys(ZONES).sort()
 const CHART_ZONES = ['무릉도원면', '영월읍', '주천면', '김삿갓면']
-const SCENARIO_COLORS = ['#e5e8eb', '#bfdbfe', '#60a5fa', '#3182f6']
+const SCENARIO_COLORS = ['#e5e8eb', '#c9e2ff', '#64a8ff', '#3182f6']
 const PRIORITY = {
   high: { label: '긴급', badge: 'badge-red' },
   mid: { label: '보통', badge: 'badge-orange' },
@@ -288,8 +288,8 @@ export default function App() {
             </Suspense>
             <div className="map-legend">
               <span><i className="leg-dot" style={{ background: '#3182f6' }} /> 음식점</span>
-              <span><i className="leg-dot" style={{ background: '#f97316' }} /> 숙박</span>
-              <span><i className="leg-dot" style={{ background: '#8b5cf6' }} /> 레저/스포츠</span>
+              <span><i className="leg-dot" style={{ background: '#fb8c00' }} /> 숙박</span>
+              <span><i className="leg-dot" style={{ background: '#ab47bc' }} /> 레저/스포츠</span>
               <span><i className="leg-dot leg-ring" /> 이식 추천 영역</span>
             </div>
           </section>
@@ -319,7 +319,7 @@ export default function App() {
                   {rows.map((r) => (
                     <tr key={r.zone} className={r.zone === zone ? 'hl' : undefined}>
                       <td>
-                        <i className="dot" style={{ background: ZONE_META[r.zone]?.color ?? '#64748b' }} />
+                        <i className="dot" style={{ background: ZONE_META[r.zone]?.color ?? '#6b7684' }} />
                         <b>{r.zone}</b>
                       </td>
                       <td className="num">{r.total}</td>

@@ -37,19 +37,19 @@ export const PRESETS: Record<string, [number, number, number]> = {
 
 export type ZoneMeta = { label: string; lat: number; lon: number; color: string; issue: string }
 export const ZONE_META: Record<string, ZoneMeta> = {
-  '무릉도원면': { label: '펜션촌', lat: 37.28, lon: 128.53, color: '#f04452', issue: '숙박 편중, 음식/레저 극소' },
+  '무릉도원면': { label: '펜션촌', lat: 37.28, lon: 128.53, color: '#f44336', issue: '숙박 편중, 음식/레저 극소' },
   '영월읍': { label: '시내 중심', lat: 37.18, lon: 128.46, color: '#3182f6', issue: '상권 밀집, 다양성 양호' },
-  '주천면': { label: '동강권', lat: 37.24, lon: 128.34, color: '#20c997', issue: '음식 중심, 숙박/레저 부족' },
-  '김삿갓면': { label: '숙박 특화', lat: 37.13, lon: 128.7, color: '#f97316', issue: '숙박 과다, 음식 극소' },
-  '한반도면': { label: '한반도지형', lat: 37.23, lon: 128.38, color: '#8b5cf6', issue: '소규모 혼합' },
-  '북면': { label: '북부', lat: 37.33, lon: 128.52, color: '#64748b', issue: '소규모' },
-  '산솔면': { label: '산간', lat: 37.16, lon: 128.57, color: '#64748b', issue: '소규모' },
-  '남면': { label: '남부', lat: 37.12, lon: 128.47, color: '#64748b', issue: '소규모' },
-  '상동읍': { label: '상동', lat: 37.12, lon: 128.83, color: '#64748b', issue: '소규모' },
+  '주천면': { label: '동강권', lat: 37.24, lon: 128.34, color: '#00a661', issue: '음식 중심, 숙박/레저 부족' },
+  '김삿갓면': { label: '숙박 특화', lat: 37.13, lon: 128.7, color: '#fb8c00', issue: '숙박 과다, 음식 극소' },
+  '한반도면': { label: '한반도지형', lat: 37.23, lon: 128.38, color: '#ab47bc', issue: '소규모 혼합' },
+  '북면': { label: '북부', lat: 37.33, lon: 128.52, color: '#6b7684', issue: '소규모' },
+  '산솔면': { label: '산간', lat: 37.16, lon: 128.57, color: '#6b7684', issue: '소규모' },
+  '남면': { label: '남부', lat: 37.12, lon: 128.47, color: '#6b7684', issue: '소규모' },
+  '상동읍': { label: '상동', lat: 37.12, lon: 128.83, color: '#6b7684', issue: '소규모' },
 }
 
 export const CAT_NAMES = ['음식', '숙박', '예술·스포츠'] as const
-export const CAT_COLORS = ['#3182f6', '#f97316', '#8b5cf6']
+export const CAT_COLORS = ['#3182f6', '#fb8c00', '#ab47bc']
 
 export function shannonH(counts: Counts): number {
   const total = Object.values(counts).reduce((a, b) => a + b, 0)
