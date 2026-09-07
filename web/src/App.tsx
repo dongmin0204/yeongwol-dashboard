@@ -15,10 +15,10 @@ const MapPanel = lazy(() => import('./MapPanel'))
 
 const CUSTOM = '직접 설정'
 const PRESET_NAMES = Object.keys(PRESETS)
-const DEFAULT_PRESET = '방식B 적극'
+const DEFAULT_PRESET = '인구비례 100%'
 const ZONE_NAMES = Object.keys(ZONES).sort()
 const CHART_ZONES = ['무릉도원면', '영월읍', '주천면', '김삿갓면']
-const SCENARIO_COLORS = ['#e5e8eb', '#c9e2ff', '#64a8ff', '#3182f6']
+const SCENARIO_COLORS = ['#c9e2ff', '#64a8ff', '#3182f6']
 const PRIORITY = {
   high: { label: '긴급', badge: 'badge-red' },
   mid: { label: '보통', badge: 'badge-orange' },
@@ -26,8 +26,8 @@ const PRIORITY = {
 }
 const NEED_BADGE: Record<string, string> = { 음식: 'badge-blue', 숙박: 'badge-orange', 레저: 'badge-green' }
 
-/** '방식A (인구비례)' → 'A 인구비례' */
-const chipLabel = (name: string) => name.replace('방식', '').replace(/[()]/g, '').trim()
+/** '인구비례 25%' → '25%' */
+const chipLabel = (name: string) => name.replace('인구비례', '').trim()
 
 const axis = { tick: { fontSize: 11, fill: '#8b95a1' }, stroke: '#e5e8eb' }
 const tooltipStyle = {
@@ -80,7 +80,7 @@ export default function App() {
     () =>
       PRESET_NAMES.map((name) => {
         const [c, f, s] = PRESETS[name]
-        return { name: name.replace('방식', '').trim(), sales: +simulate(zone, c, f, s).sales억.toFixed(1) }
+        return { name: chipLabel(name), sales: +simulate(zone, c, f, s).sales억.toFixed(1) }
       }),
     [zone],
   )
@@ -158,6 +158,7 @@ export default function App() {
       <aside className="controls" ref={controlsRef}>
         <h1 className="controls-title">시뮬레이션 설정</h1>
         <div className="controls-body">
+          <div className="group-label">이식 규모 — 인구비례</div>
           <div className="chips">
             {PRESET_NAMES.map((n) => (
               <button
@@ -286,8 +287,8 @@ export default function App() {
             </div>
 
             <div className="card">
-              <div className="card-title">시나리오별 추가 관광소비</div>
-              <div className="card-sub">억원/년</div>
+              <div className="card-title">이식 규모별 추가 관광소비</div>
+              <div className="card-sub">인구비례 방식 25/50/100% · 억원/년</div>
               <div className="chart">
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={scenarios} margin={{ top: 20, right: 8, left: -16, bottom: 0 }}>

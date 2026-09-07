@@ -28,11 +28,12 @@ export const STAY_MIX: Counts = {
   '캠핑/글램핑': 0.15, '그 외 기타 숙박업': 0.1,
 }
 
+// 인구비례 방식 100% = (62, 9, 30) → 연간 자연감소 587명분 소비를 정확히 상쇄.
+// 25%/50%는 업종별 수량을 비율 반올림한 값.
 export const PRESETS: Record<string, [number, number, number]> = {
-  '방식A (인구비례)': [62, 9, 30],
-  '방식B 보수': [10, 15, 10],
-  '방식B 중간': [30, 30, 20],
-  '방식B 적극': [62, 30, 30],
+  '인구비례 25%': [16, 2, 8],
+  '인구비례 50%': [31, 5, 15],
+  '인구비례 100%': [62, 9, 30],
 }
 
 export type ZoneMeta = { label: string; lat: number; lon: number; color: string; issue: string }
