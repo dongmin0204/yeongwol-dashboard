@@ -31,9 +31,9 @@ export const STAY_MIX: Counts = {
 // 인구비례 방식 100% = (62, 9, 30) → 연간 자연감소 587명분 소비를 정확히 상쇄.
 // 25%/50%는 업종별 수량을 비율 반올림한 값.
 export const PRESETS: Record<string, [number, number, number]> = {
-  '인구비례 25%': [16, 2, 8],
-  '인구비례 50%': [31, 5, 15],
-  '인구비례 100%': [62, 9, 30],
+  '보수 25%': [16, 2, 8],
+  '중간 50%': [31, 5, 15],
+  '적극 100%': [62, 9, 30],
 }
 
 export type ZoneMeta = { label: string; lat: number; lon: number; color: string; issue: string }
@@ -119,7 +119,8 @@ export function simulate(zone: string, cafeN: number, foodN: number, stayN: numb
     beforeCount: sum(base), afterCount: sum(base) + sum(added),
     sales억: sales / 10000,
     addTax억: addTax / 10000,
-    popOff: Math.floor((sales * LOCAL_RATE) / POP_EQ),
+    // 보고서 §9와 동일하게 반올림 (보수 150명·중간 299명)
+    popOff: Math.round((sales * LOCAL_RATE) / POP_EQ),
     newFi: ((OWN_BM + addTax / 100) / TOTAL_BM) * 100,
   }
 }
