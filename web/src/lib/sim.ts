@@ -119,8 +119,9 @@ export function simulate(zone: string, cafeN: number, foodN: number, stayN: numb
     beforeCount: sum(base), afterCount: sum(base) + sum(added),
     sales억: sales / 10000,
     addTax억: addTax / 10000,
-    // 보고서 §9와 동일하게 반올림 (보수 150명·중간 299명)
-    popOff: Math.round((sales * LOCAL_RATE) / POP_EQ),
+    // KPI에 표시되는 소비액(0.1억 단위 반올림)을 기준으로 환산 —
+    // 보고서 §9 수치(보수 150·중간 299·적극 587명분)와 화면 표기가 일치한다.
+    popOff: Math.round((Math.round(sales / 1000) * 1000 * LOCAL_RATE) / POP_EQ),
     newFi: ((OWN_BM + addTax / 100) / TOTAL_BM) * 100,
   }
 }
