@@ -45,8 +45,10 @@ body {
 .controls-body { margin-top: 14px; }
 
 /* 프리셋 칩 */
-.chips { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+/* ponytail: flex-wrap 대신 3열 그리드를 쓰면 좁은 사이드바(280px)에서 칩이 밖으로 삐져나감 */
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
 .chip {
+  flex: 1 1 auto;
   border: none; background: var(--line); color: var(--ink-3);
   border-radius: 10px; padding: 10px 12px; font-size: 13px; font-weight: 600;
   font-family: inherit; cursor: pointer; white-space: nowrap;
@@ -252,7 +254,7 @@ body {
 }
 .card-title { font-size: 16px; font-weight: 700; color: var(--ink); margin-bottom: 4px; letter-spacing: -0.01em; }
 .card-sub { font-size: 13px; color: var(--muted); margin-bottom: 16px; }
-.grid-2, .grid-detail { display: grid; grid-template-columns: 1fr; gap: 0; }
+.grid-2, .grid-detail { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0; }
 
 .chart { height: 300px; }
 .chart-tall { height: 420px; }
@@ -338,10 +340,10 @@ body {
   .hero { padding: 36px 40px 32px; margin-bottom: 28px; }
   .hero h2 { font-size: 26px; }
   .hero p { font-size: 14px; }
-  .kpi-row { grid-template-columns: 1.4fr 1fr 1fr; gap: 16px; margin-bottom: 28px; }
+  .kpi-row { grid-template-columns: 1.4fr minmax(0, 1fr) minmax(0, 1fr); gap: 16px; margin-bottom: 28px; }
   .card { padding: 28px; margin-bottom: 20px; }
-  .grid-2 { grid-template-columns: 1fr 1fr; gap: 20px; }
-  .grid-detail { grid-template-columns: 3fr 2fr; gap: 20px; }
+  .grid-2 { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 20px; }
+  .grid-detail { grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: 20px; }
   .chart { height: 360px; }
   .chart-tall { height: 460px; }
   .map { height: 520px; }
@@ -349,7 +351,7 @@ body {
   .hero-stat-value { font-size: 30px; }
   .sec-head { margin: 8px 0 18px; }
   .sec-title { font-size: 24px; }
-  .ev-grid { grid-template-columns: 1fr 1fr; gap: 20px; }
-  .use-grid { grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .ev-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 20px; }
+  .use-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
   .insight { padding: 24px 28px; }
 }
